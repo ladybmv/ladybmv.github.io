@@ -1,7 +1,6 @@
 ---
 import Section from "../Section.astro";
 import Phone from "@/icons/Phone.astro";
-import Mail from "@/icons/Mail.astro";
 import type { References as RefType } from "@/cv";
 import { references } from "@cv";
 
@@ -28,34 +27,42 @@ const personalRefs = refList.filter(
               <span class="status-dot laboral-dot"></span>
               <h3>Laborales / Profesionales</h3>
             </div>
-            <span class="count-pill">{laboralRefs.length} referencia{laboralRefs.length > 1 ? 's' : ''}</span>
+            <span class="count-pill">{laboralRefs.length} referencia{laboralRefs.length > 1 ? "s" : ""}</span>
           </header>
 
           <div class="col-cards-wrapper laboral-wrapper">
-            {laboralRefs.map(({ name, title, company, area, phone, email, reference }) => (
+            {laboralRefs.map(({ name, title, company, phone, reference }) => (
               <article class="ref-card card-laboral">
-                <div class="card-main">
-                  <header class="card-head">
-                    <span class="type-tag tag-laboral">Profesional</span>
-                    <h4 class="person-name">{name}</h4>
-                    {title && <p class="person-title">{title}</p>}
-                    {(company || area) && (
-                      <p class="company-tag">
-                        {company && <span>{company}</span>}
-                        {company && area && <span class="sep">•</span>}
-                        {area && <span>{area}</span>}
+                <div class="card-head-row">
+                  <div class="card-identity">
+                    <div class="ref-avatar avatar-laboral" aria-hidden="true">
+                      <!-- Icono Maletín Profesional -->
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect width="20" height="14" x="2" y="7" rx="2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                      </svg>
+                    </div>
+
+                    <div class="identity-meta">
+                      <span class="type-tag tag-laboral">Profesional</span>
+                      <h4 class="person-name">{name}</h4>
+                      <p class="person-title">
+                        {title}
+                        {company && <span class="company-name"> · {company}</span>}
                       </p>
-                    )}
-                  </header>
+                    </div>
+                  </div>
 
-                  {reference && (
-                    <blockquote class="ref-quote">
-                      <p>{reference}</p>
-                    </blockquote>
-                  )}
-                </div>
-
-                <footer class="card-actions">
                   {phone && (
                     <a
                       href={`tel:${phone}`}
@@ -67,17 +74,13 @@ const personalRefs = refList.filter(
                       <span>{phone}</span>
                     </a>
                   )}
-                  {email && (
-                    <a
-                      href={`mailto:${email}`}
-                      class="contact-chip email-chip"
-                      title={`Enviar correo a ${name}`}
-                    >
-                      <Mail />
-                      <span>{email}</span>
-                    </a>
-                  )}
-                </footer>
+                </div>
+
+                {reference && (
+                  <div class="card-context-note">
+                    <p class="quote-text">"{reference}"</p>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -96,8 +99,9 @@ const personalRefs = refList.filter(
           <div class="col-cards-wrapper personal-wrapper">
             {personalRefs.map(({ name, phone, reference }) => (
               <article class="ref-card card-personal">
-                <div class="personal-info">
-                  <div class="personal-avatar" aria-hidden="true">
+                <div class="card-identity">
+                  <div class="ref-avatar avatar-personal" aria-hidden="true">
+                    <!-- Icono Usuario -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -114,17 +118,17 @@ const personalRefs = refList.filter(
                     </svg>
                   </div>
 
-                  <div class="personal-meta">
+                  <div class="identity-meta">
                     <span class="type-tag tag-personal">Personal</span>
                     <h4 class="person-name">{name}</h4>
-                    <span class="person-rel">{reference || "Referencia Personal"}</span>
+                    <span class="person-sub">{reference || "Referencia Personal"}</span>
                   </div>
                 </div>
 
                 {phone && (
                   <a
                     href={`tel:${phone}`}
-                    class="contact-chip phone-chip personal-phone"
+                    class="contact-chip phone-chip"
                     title={`Llamar a ${name}`}
                     aria-label={`Llamar a ${name} al ${phone}`}
                   >
@@ -153,9 +157,10 @@ const personalRefs = refList.filter(
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
+    height: 100%;
   }
 
-  /* Encabezados de Columna */
+  /* Encabezados de Columna Simétricos */
   .col-header {
     display: flex;
     justify-content: space-between;
@@ -187,7 +192,7 @@ const personalRefs = refList.filter(
 
   .status-dot.laboral-dot {
     background: var(--accent-primary);
-    box-shadow: 0 0 8px rgba(123, 180, 236, 0.4);
+    box-shadow: 0 0 8px rgba(135, 150, 202, 0.45);
   }
 
   .status-dot.personal-dot {
@@ -205,42 +210,75 @@ const personalRefs = refList.filter(
     flex-direction: column;
     gap: var(--sp-3);
     flex: 1;
+    height: 100%;
   }
 
   /* Tarjeta Base */
   .ref-card {
     background: var(--bg-elevated);
     border-radius: var(--radius-md);
-    transition: all var(--duration-fast) var(--ease-out);
   }
 
-  /* Tarjeta Laboral / Profesional con espaciado centrado y sin huecos */
+  /* Tarjeta Laboral / Profesional */
   .card-laboral {
-    padding: 1.5rem 1.75rem;
+    padding:.75rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0.9rem;
-    height: 100%;
+    justify-content: space-between;
+    gap: var(--sp-3);
     border: 1px solid var(--accent-primary-border);
   }
 
   .card-laboral:hover {
     border-color: var(--accent-primary);
-    box-shadow: 0 4px 20px rgba(123, 180, 236, 0.10);
+    box-shadow: 0 4px 18px rgba(135, 150, 202, 0.15);
     transform: translateY(-1px);
   }
 
-  .card-main {
+  .card-head-row {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
   }
 
-  .card-head {
+  .card-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-width: 0;
+    flex: 1;
+  }
+
+  /* Avatares Simétricos */
+  .ref-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .avatar-laboral {
+    background: var(--accent-primary-subtle);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary-border);
+  }
+
+  .avatar-personal {
+    background: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border-default);
+  }
+
+  .identity-meta {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
+    min-width: 0;
   }
 
   .type-tag {
@@ -263,13 +301,13 @@ const personalRefs = refList.filter(
   }
 
   .tag-personal {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--accent-subtle);
     color: var(--text-muted);
     border: 1px solid var(--border-subtle);
   }
 
   .person-name {
-    font-size: var(--fs-base);
+    font-size: var(--fs-sm);
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
@@ -281,99 +319,54 @@ const personalRefs = refList.filter(
     font-weight: 500;
     color: var(--accent-primary);
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
-  .company-tag {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .company-name {
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .person-sub {
     font-size: var(--fs-xs);
     color: var(--text-muted);
-    margin: 0;
+    line-height: 1.3;
   }
 
-  .sep {
-    opacity: 0.5;
-  }
-
-  .ref-quote {
-    background: rgba(123, 180, 236, 0.04);
-    border-left: 2px solid var(--accent-primary);
+  .card-context-note {
+    background: var(--accent-primary-subtle);
+    border-left: 3px solid var(--accent-primary);
     border-radius: var(--radius-sm);
-    padding: var(--sp-2) var(--sp-3);
-    margin: 4px 0 0 0;
+    padding: 0.55rem 0.85rem;
+    margin-top: auto;
   }
 
-  .ref-quote p {
+  .quote-text {
     font-size: var(--fs-xs);
-    line-height: 1.5;
+    line-height: 1.45;
     color: var(--text-secondary);
     margin: 0;
     font-style: italic;
   }
 
-  .card-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sp-2);
-    margin-top: 4px;
-    padding-top: 0;
-  }
-
   /* Tarjeta Personal */
   .card-personal {
-    padding: var(--sp-4) var(--sp-5);
+    padding: .75rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: var(--sp-3);
     border: 1px solid var(--border-default);
+    flex: 1;
   }
 
   .card-personal:hover {
     border-color: var(--accent-primary-border);
     transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(135, 150, 202, 0.10);
   }
 
-  .personal-info {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-3);
-    min-width: 0;
-  }
-
-  .personal-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-full);
-    background: var(--bg-card);
-    border: 1px solid var(--border-default);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--text-muted);
-  }
-
-  .personal-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .personal-meta .person-name {
-    font-size: var(--fs-sm);
-  }
-
-  .person-rel {
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
-    line-height: 1.2;
-  }
-
-  /* Chips de Contacto */
+  /* Chips de Contacto (Teléfono) */
   .contact-chip {
     display: inline-flex;
     align-items: center;
@@ -386,25 +379,22 @@ const personalRefs = refList.filter(
     background: var(--bg-card);
     border: 1px solid var(--border-default);
     color: var(--text-primary);
-    transition: all var(--duration-fast) var(--ease-out);
     font-family: inherit;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
 
   .contact-chip:hover {
     background: var(--accent-primary-subtle);
     border-color: var(--accent-primary);
     color: var(--accent-primary);
+    transform: translateY(-1px);
   }
 
   .contact-chip :global(svg) {
     width: 13px;
     height: 13px;
     color: var(--accent-primary);
-    flex-shrink: 0;
-  }
-
-  .personal-phone {
     flex-shrink: 0;
   }
 
@@ -415,19 +405,28 @@ const personalRefs = refList.filter(
       gap: var(--sp-6);
     }
 
+    .card-head-row,
+    .card-personal {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .card-head-row,
     .card-personal {
       flex-direction: column;
       align-items: flex-start;
       gap: var(--sp-3);
     }
 
-    .personal-phone {
+    .contact-chip {
       width: 100%;
       justify-content: center;
     }
   }
 
-  /* Print */
+  /* Impresión ATS A4 */
   @media print {
     .references-dual-columns {
       grid-template-columns: repeat(2, 1fr) !important;
@@ -443,7 +442,8 @@ const personalRefs = refList.filter(
       color: #000 !important;
     }
 
-    .status-dot, .count-pill {
+    .status-dot,
+    .count-pill {
       display: none !important;
     }
 
@@ -459,7 +459,7 @@ const personalRefs = refList.filter(
     .card-laboral {
       min-height: auto !important;
       gap: 6px !important;
-      padding: 8px 12px !important;
+      padding: 6px 10px !important;
     }
 
     .type-tag {
@@ -495,8 +495,14 @@ const personalRefs = refList.filter(
       height: 11px !important;
     }
 
-    .personal-avatar {
+    .ref-avatar {
       display: none !important;
+    }
+
+    .card-context-note {
+      background: transparent !important;
+      border-left: 2px solid #9ca3af !important;
+      padding: 2px 6px !important;
     }
   }
 </style>

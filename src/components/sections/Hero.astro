@@ -27,16 +27,57 @@ const { class: className } = Astro.props;
         <h2>{label}</h2>
       </header>
 
-      <p class="summary">{summary}</p>
-
-      <div class="meta-badges no-print">
-        <div class="location-badge">
-          <WorldMap />
-          <span>{address ? `${address}, ` : ''}{city}, {region}</span>
-        </div>
-        {cedula && <span class="info-pill highlight">C.I. {cedula}</span>}
-        {age && <span class="info-pill">{age}</span>}
+      <!-- Barra Unificada de Badges Informativos -->
+      <div class="hero-badges no-print">
+        {(address || city || region) && (
+          <div class="badge-capsule" title="Ubicación de residencia">
+            <WorldMap />
+            <span>{address ? `${address}, ` : ''}{city}, {region}</span>
+          </div>
+        )}
+        {cedula && (
+          <div class="badge-capsule highlight" title="Cédula de Identidad">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect width="18" height="14" x="3" y="5" rx="2" />
+              <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
+            </svg>
+            <span>C.I. {cedula}</span>
+          </div>
+        )}
+        {age && (
+          <div class="badge-capsule" title="Edad">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>{age}</span>
+          </div>
+        )}
       </div>
+
+      <p class="summary">{summary}</p>
 
       <footer class="print">
         {printInfo}
@@ -120,49 +161,61 @@ const { class: className } = Astro.props;
     line-height: 1.4;
   }
 
+  /* Barra Cohesiva de Badges Informativos */
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2px;
+  }
+
+  .badge-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    padding: 4px 11px;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--duration-fast) var(--ease-out);
+    white-space: nowrap;
+    line-height: 1.35;
+  }
+
+  .badge-capsule:hover {
+    border-color: var(--accent-primary-border);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(135, 150, 202, 0.15);
+  }
+
+  .badge-capsule :global(svg) {
+    width: 13px;
+    height: 13px;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+  }
+
+  .badge-capsule.highlight {
+    background: var(--accent-primary-subtle);
+    border-color: var(--accent-primary-border);
+    color: var(--accent-primary);
+    font-weight: 600;
+  }
+
+  .badge-capsule.highlight :global(svg) {
+    color: var(--accent-primary);
+  }
+
   .summary {
     color: var(--text-secondary);
     font-size: var(--fs-sm);
     line-height: 1.6;
     max-width: 95%;
-  }
-
-  .meta-badges {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sp-2);
-  }
-
-  .location-badge {
-    color: var(--text-secondary);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sp-2);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-  }
-
-  .location-badge :global(svg) {
-    color: var(--accent-primary);
-  }
-
-  .info-pill {
-    display: inline-flex;
-    align-items: center;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-sm);
-    padding: 3px 9px;
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
-
-  .info-pill.highlight {
-    background: var(--accent-primary-subtle);
-    border-color: var(--accent-primary-border);
-    color: var(--accent-primary);
   }
 
   .profile-figure {
@@ -175,8 +228,8 @@ const { class: className } = Astro.props;
   img {
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    width: 120px;
-    height: 120px;
+    width: 8rem;
+    height: 8rem;
     border-radius: var(--radius-lg);
     border: 1px solid var(--accent-primary-border);
     background: var(--bg-elevated);
@@ -185,7 +238,7 @@ const { class: className } = Astro.props;
 
   img:hover {
     border-color: var(--accent-primary);
-    box-shadow: 0 0 16px rgba(123, 180, 236, 0.2);
+    box-shadow: 0 0 16px rgba(135, 150, 202, 0.25);
   }
 
   .actions {
@@ -206,16 +259,16 @@ const { class: className } = Astro.props;
     border-radius: var(--radius-sm);
     font-size: var(--fs-xs);
     font-weight: 600;
-    transition: all var(--duration-fast) var(--ease-out);
     text-decoration: none;
     cursor: pointer;
     font-family: inherit;
     white-space: nowrap;
+    transition: all var(--duration-fast) var(--ease-out);
   }
 
   .cta.primary {
     background: var(--accent-primary);
-    color: #0b121d;
+    color: var(--cta-text);
     border: 1px solid var(--accent-primary);
   }
 
@@ -226,7 +279,7 @@ const { class: className } = Astro.props;
   }
 
   .cta.primary :global(svg) {
-    color: #0b121d;
+    color: var(--cta-text);
   }
 
   .cta.secondary {
@@ -236,7 +289,7 @@ const { class: className } = Astro.props;
   }
 
   .cta.secondary:hover {
-    background: rgba(123, 180, 236, 0.08);
+    background: var(--accent-primary-subtle);
     border-color: var(--accent-primary);
     color: var(--accent-primary);
     transform: translateY(-1px);
@@ -277,29 +330,48 @@ const { class: className } = Astro.props;
     }
   }
 
+  /* Vista Impresión / PDF */
   @media print {
+    .container {
+      align-items: flex-start !important;
+      gap: 1.25rem !important;
+    }
+
     h1 {
       font-size: 1.5rem !important;
       color: #000 !important;
     }
+
     h2 {
       font-size: 0.95rem !important;
       color: #333 !important;
     }
+
     .summary {
       font-size: 0.82rem !important;
       line-height: 1.45 !important;
       color: #333 !important;
     }
+
     .profile-figure {
       border: none !important;
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
     }
+
+    /* Imagen agrandada a 8rem en vista print */
     img {
-      width: 75px !important;
-      height: 75px !important;
-      border: 1px solid #d1d5db !important;
-      border-radius: 6px !important;
+      width: 8rem !important;
+      height: 8rem !important;
+      min-width: 8rem !important;
+      min-height: 8rem !important;
+      border: 1.5px solid #d1d5db !important;
+      border-radius: 8px !important;
+      object-fit: cover !important;
     }
+
     footer.print {
       font-size: 0.75rem !important;
       color: #374151 !important;

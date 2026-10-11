@@ -6,12 +6,15 @@ import Hero from "@/components/sections/Hero.astro";
 import Skills from "@/components/sections/Skills.astro";
 import References from "@/components/sections/References.astro";
 import DownloadPDF from "@/components/DownloadPDF.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
 
 import { basics } from "@cv";
 const { name, label, location } = basics;
 ---
 
 <Layout title={`${name} · ${label} | ${location.city}, ${location.region}`}>
+  <ThemeToggle />
+
   <main>
     <Hero class="section-card" />
     <Experience class="section-card" />

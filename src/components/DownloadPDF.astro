@@ -22,15 +22,14 @@ import Download from "@/icons/Download.astro"
     align-items: center;
     gap: var(--sp-2);
     background: var(--accent-primary);
-    color: #0b121d;
+    color: var(--cta-text);
     border: 1px solid var(--accent-primary);
     border-radius: var(--radius-full);
     padding: 0.65rem 1.2rem;
     font-size: var(--fs-xs);
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    transition: all var(--duration-fast) var(--ease-out);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     z-index: 999;
     font-family: inherit;
   }
@@ -39,11 +38,11 @@ import Download from "@/icons/Download.astro"
     transform: translateY(-2px);
     background: var(--accent-primary-hover);
     border-color: var(--accent-primary-hover);
-    box-shadow: 0 10px 25px rgba(123, 180, 236, 0.35);
+    box-shadow: 0 10px 25px rgba(135, 150, 202, 0.35);
   }
 
   #download-pdf-btn :global(svg) {
-    color: #0b121d;
+    color: var(--cta-text);
   }
 
   @media (max-width: 700px) {

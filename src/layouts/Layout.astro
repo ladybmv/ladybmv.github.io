@@ -31,6 +31,23 @@ const { image, summary, url } = basics
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta name="twitter:description" content={summary} />
+
+    <!-- Script de detección de tema anti-FOUC (síncrono en head) -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          if (stored === "light" || (!stored && prefersLight)) {
+            document.documentElement.classList.add("light");
+            document.documentElement.classList.remove("dark");
+          } else {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+          }
+        } catch (_) {}
+      })();
+    </script>
   </head>
   <body>
     <slot />
@@ -38,32 +55,36 @@ const { image, summary, url } = basics
 </html>
 
 <style is:global>
-  :root {
-    /* Surfaces: Slate Dark */
-    --bg-base: #0b0e14;
-    --bg-card: #111622;
-    --bg-elevated: #161e2e;
-    --bg-overlay: rgba(11, 14, 20, 0.85);
+  :root,
+  html.dark {
+    /* Surfaces: Deep Slate Dark con acento suave */
+    --bg-base: #0b0d13;
+    --bg-card: #121520;
+    --bg-elevated: #181d2a;
+    --bg-overlay: rgba(11, 13, 19, 0.88);
 
     /* Borders */
     --border-subtle: rgba(255, 255, 255, 0.06);
-    --border-default: rgba(123, 180, 236, 0.16);
-    --border-hover: rgba(123, 180, 236, 0.38);
-    --border-card: rgba(123, 180, 236, 0.10);
+    --border-default: rgba(135, 150, 202, 0.18);
+    --border-hover: rgba(135, 150, 202, 0.42);
+    --border-card: rgba(135, 150, 202, 0.10);
 
     /* Text */
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-tertiary: #64748b;
-    --text-muted: #64748b;
+    --text-primary: #f3f4f8;
+    --text-secondary: #9ca3af;
+    --text-tertiary: #6b7280;
+    --text-muted: #6b7280;
 
-    /* Technical Accents: Pastel Blue */
+    /* Technical Accents: rgb(135 150 202) */
     --accent: #e2e8f0;
-    --accent-subtle: rgba(123, 180, 236, 0.08);
-    --accent-primary: #7bb4ec;
-    --accent-primary-hover: #93c5fd;
-    --accent-primary-subtle: rgba(123, 180, 236, 0.12);
-    --accent-primary-border: rgba(123, 180, 236, 0.25);
+    --accent-subtle: rgba(135, 150, 202, 0.08);
+    --accent-primary: rgb(135, 150, 202);
+    --accent-primary-hover: rgb(162, 175, 220);
+    --accent-primary-subtle: rgba(135, 150, 202, 0.14);
+    --accent-primary-border: rgba(135, 150, 202, 0.30);
+    --cta-text: #0b0d13;
+    --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
 
     /* Type Scale */
     --fs-xs: 0.75rem;
@@ -98,13 +119,41 @@ const { image, summary, url } = basics
     --duration-normal: 250ms;
   }
 
+  /* ☀️ Modo Claro */
+  html.light {
+    --bg-base: #f4f6fa;
+    --bg-card: #ffffff;
+    --bg-elevated: #eef2f7;
+    --bg-overlay: rgba(244, 246, 250, 0.90);
+
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-default: rgba(135, 150, 202, 0.34);
+    --border-hover: rgba(135, 150, 202, 0.65);
+    --border-card: rgba(135, 150, 202, 0.18);
+
+    --text-primary: #121620;
+    --text-secondary: #4b5563;
+    --text-tertiary: #6b7280;
+    --text-muted: #6b7280;
+
+    --accent: #121620;
+    --accent-subtle: rgba(135, 150, 202, 0.10);
+    --accent-primary: #5d6ea7;
+    --accent-primary-hover: #4c5a8e;
+    --accent-primary-subtle: rgba(135, 150, 202, 0.15);
+    --accent-primary-border: rgba(135, 150, 202, 0.38);
+    --cta-text: #ffffff;
+    --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+  }
+
   html {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg-base);
     color: var(--text-primary);
     letter-spacing: -0.015em;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    transition: background-color var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out);
   }
 
   ::-webkit-scrollbar {
@@ -113,12 +162,12 @@ const { image, summary, url } = basics
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--scrollbar-thumb);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: var(--scrollbar-thumb-hover);
   }
 
   ::-webkit-scrollbar-track {
