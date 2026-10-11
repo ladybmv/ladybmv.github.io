@@ -6,366 +6,334 @@ import type { References as RefType } from "@/cv";
 import { references } from "@cv";
 
 const { class: className } = Astro.props;
-
 const refList = (references || []) as Array<RefType>;
 
 const laboralRefs = refList.filter(
-  (r) => r.type?.toLowerCase() === "laboral"
+  (r) => r.type?.toLowerCase() === "laboral" || r.type?.toLowerCase() === "profesional"
 );
 
 const personalRefs = refList.filter(
-  (r) => r.type?.toLowerCase() !== "laboral"
+  (r) => r.type?.toLowerCase() !== "laboral" && r.type?.toLowerCase() !== "profesional"
 );
 ---
 
 {
-  references && references.length > 0 && (
-    <Section
-      title="Referencias"
-      class={`references-section ${className || ""}`}
-    >
-      <div class="references-container">
-        {laboralRefs.length > 0 && (
-          <div class="ref-group">
-            <header class="group-header">
-              <div class="group-title-row">
-                <span class="group-indicator laboral"></span>
-                <h3>Laborales</h3>
-              </div>
-              <span class="group-count">{laboralRefs.length} referencias</span>
-            </header>
+  refList.length > 0 && (
+    <Section title="Referencias" class={`references-section ${className || ""}`}>
+      <div class="references-dual-columns">
+        <!-- Columna 1: Laborales / Profesionales -->
+        <div class="ref-col col-laboral">
+          <header class="col-header">
+            <div class="col-title-badge">
+              <span class="status-dot laboral-dot"></span>
+              <h3>Laborales / Profesionales</h3>
+            </div>
+            <span class="count-pill">{laboralRefs.length} referencia{laboralRefs.length > 1 ? 's' : ''}</span>
+          </header>
 
-            <ul class="laboral-grid">
-              {laboralRefs.map(
-                ({ name, phone, title, company, area, email, reference }) => (
-                  <li class="ref-item">
-                    <article class="ref-card laboral-card">
-                      <header class="ref-card-header">
-                        <div class="ref-title-block">
-                          <h4>{name}</h4>
-                          {title && <span class="ref-position">{title}</span>}
-                        </div>
-
-                        {(company || area) && (
-                          <div class="ref-company-tag">
-                            {company && <span class="company-name">{company}</span>}
-                            {company && area && <span class="sep">•</span>}
-                            {area && <span class="area-name">{area}</span>}
-                          </div>
-                        )}
-                      </header>
-
-                      {reference && (
-                        <div class="ref-quote">
-                          <p>{reference}</p>
-                        </div>
-                      )}
-
-                      <footer class="ref-card-footer">
-                        {phone && (
-                          <a
-                            href={`tel:${phone}`}
-                            class="action-chip phone"
-                            title={`Llamar a ${name}`}
-                            aria-label={`Llamar a ${name} al ${phone}`}
-                          >
-                            <Phone />
-                            <span>{phone}</span>
-                          </a>
-                        )}
-
-                        {email && (
-                          <a
-                            href={`mailto:${email}`}
-                            class="action-chip email"
-                            title={`Enviar correo a ${name}`}
-                            aria-label={`Enviar correo a ${name}`}
-                          >
-                            <Mail />
-                            <span>{email}</span>
-                          </a>
-                        )}
-                      </footer>
-                    </article>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        )}
-
-        {personalRefs.length > 0 && (
-          <div class="ref-group">
-            <header class="group-header">
-              <div class="group-title-row">
-                <span class="group-indicator personal"></span>
-                <h3>Personales</h3>
-              </div>
-              <span class="group-count">{personalRefs.length} referencias</span>
-            </header>
-
-            <ul class="personal-grid">
-              {personalRefs.map(({ name, phone, reference }) => (
-                <li class="ref-item">
-                  <article class="ref-card personal-card">
-                    <div class="personal-info">
-                      <div class="personal-avatar" aria-hidden="true">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                          <circle cx="12" cy="7" r="4" />
-                        </svg>
-                      </div>
-
-                      <div class="personal-meta">
-                        <h4>{name}</h4>
-                        <span class="personal-rel">
-                          {reference || "Referencia Personal"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {phone && (
-                      <a
-                        href={`tel:${phone}`}
-                        class="action-chip phone personal-phone"
-                        title={`Llamar a ${name}`}
-                        aria-label={`Llamar a ${name} al ${phone}`}
-                      >
-                        <Phone />
-                        <span>{phone}</span>
-                      </a>
+          <div class="col-cards-wrapper laboral-wrapper">
+            {laboralRefs.map(({ name, title, company, area, phone, email, reference }) => (
+              <article class="ref-card card-laboral">
+                <div class="card-main">
+                  <header class="card-head">
+                    <span class="type-tag tag-laboral">Profesional</span>
+                    <h4 class="person-name">{name}</h4>
+                    {title && <p class="person-title">{title}</p>}
+                    {(company || area) && (
+                      <p class="company-tag">
+                        {company && <span>{company}</span>}
+                        {company && area && <span class="sep">•</span>}
+                        {area && <span>{area}</span>}
+                      </p>
                     )}
-                  </article>
-                </li>
-              ))}
-            </ul>
+                  </header>
+
+                  {reference && (
+                    <blockquote class="ref-quote">
+                      <p>{reference}</p>
+                    </blockquote>
+                  )}
+                </div>
+
+                <footer class="card-actions">
+                  {phone && (
+                    <a
+                      href={`tel:${phone}`}
+                      class="contact-chip phone-chip"
+                      title={`Llamar a ${name}`}
+                      aria-label={`Llamar a ${name} al ${phone}`}
+                    >
+                      <Phone />
+                      <span>{phone}</span>
+                    </a>
+                  )}
+                  {email && (
+                    <a
+                      href={`mailto:${email}`}
+                      class="contact-chip email-chip"
+                      title={`Enviar correo a ${name}`}
+                    >
+                      <Mail />
+                      <span>{email}</span>
+                    </a>
+                  )}
+                </footer>
+              </article>
+            ))}
           </div>
-        )}
+        </div>
+
+        <!-- Columna 2: Personales -->
+        <div class="ref-col col-personal">
+          <header class="col-header">
+            <div class="col-title-badge">
+              <span class="status-dot personal-dot"></span>
+              <h3>Personales</h3>
+            </div>
+            <span class="count-pill">{personalRefs.length} referencias</span>
+          </header>
+
+          <div class="col-cards-wrapper personal-wrapper">
+            {personalRefs.map(({ name, phone, reference }) => (
+              <article class="ref-card card-personal">
+                <div class="personal-info">
+                  <div class="personal-avatar" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+
+                  <div class="personal-meta">
+                    <span class="type-tag tag-personal">Personal</span>
+                    <h4 class="person-name">{name}</h4>
+                    <span class="person-rel">{reference || "Referencia Personal"}</span>
+                  </div>
+                </div>
+
+                {phone && (
+                  <a
+                    href={`tel:${phone}`}
+                    class="contact-chip phone-chip personal-phone"
+                    title={`Llamar a ${name}`}
+                    aria-label={`Llamar a ${name} al ${phone}`}
+                  >
+                    <Phone />
+                    <span>{phone}</span>
+                  </a>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   )
 }
 
 <style>
-  .references-container {
-    display: flex;
-    flex-direction: column;
+  .references-dual-columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-6);
+    align-items: stretch;
   }
 
-  .ref-group {
+  .ref-col {
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
   }
 
-  /* ─── Group Headers ─── */
-  .group-header {
+  /* Encabezados de Columna */
+  .col-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: var(--sp-1);
-    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-default);
   }
 
-  .group-title-row {
+  .col-title-badge {
     display: flex;
     align-items: center;
     gap: var(--sp-2);
   }
 
-  .group-title-row h3 {
+  .col-title-badge h3 {
     font-size: var(--fs-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-tertiary);
+    margin: 0;
   }
 
-  .group-indicator {
+  .status-dot {
     width: 7px;
     height: 7px;
     border-radius: var(--radius-full);
   }
 
-  .group-indicator.laboral {
-    background-color: var(--accent-primary);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+  .status-dot.laboral-dot {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px rgba(123, 180, 236, 0.4);
   }
 
-  .group-indicator.personal {
-    background-color: #a1a1aa;
+  .status-dot.personal-dot {
+    background: var(--text-muted);
   }
 
-  .group-count {
+  .count-pill {
     font-size: var(--fs-xs);
     color: var(--text-muted);
     font-weight: 400;
   }
 
-  /* ─── Grids ─── */
-  .laboral-grid,
-  .personal-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--sp-4);
-  }
-
-  /* ─── Cards Base ─── */
-  .ref-card {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    transition:
-      border-color var(--duration-fast) var(--ease-out),
-      background-color var(--duration-fast) var(--ease-out);
-  }
-
-  .ref-card:hover {
-    border-color: var(--border-default);
-  }
-
-  /* ─── Laboral Card ─── */
-  .laboral-card {
-    padding: var(--sp-4) var(--sp-5);
+  .col-cards-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: var(--sp-3);
-    height: 100%;
+    flex: 1;
   }
 
-  .ref-card-header {
+  /* Tarjeta Base */
+  .ref-card {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  /* Tarjeta Laboral / Profesional con espaciado centrado y sin huecos */
+  .card-laboral {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
+    height: 100%;
+    border: 1px solid var(--accent-primary-border);
+  }
+
+  .card-laboral:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 20px rgba(123, 180, 236, 0.10);
+    transform: translateY(-1px);
+  }
+
+  .card-main {
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
 
-  .ref-title-block {
+  .card-head {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
   }
 
-  .ref-title-block h4 {
-    font-size: var(--fs-sm);
+  .type-tag {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .tag-laboral {
+    background: var(--accent-primary-subtle);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary-border);
+  }
+
+  .tag-personal {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .person-name {
+    font-size: var(--fs-base);
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
+    margin: 0;
   }
 
-  .ref-position {
+  .person-title {
     font-size: var(--fs-xs);
     font-weight: 500;
     color: var(--accent-primary);
+    margin: 0;
     line-height: 1.4;
   }
 
-  .ref-company-tag {
+  .company-tag {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 6px;
     font-size: var(--fs-xs);
-    color: var(--text-tertiary);
-  }
-
-  .company-name {
-    color: var(--text-secondary);
-    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0;
   }
 
   .sep {
     opacity: 0.5;
   }
 
-  .area-name {
-    color: var(--text-muted);
-  }
-
-  /* ─── Quote / Context Block ─── */
   .ref-quote {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: rgba(123, 180, 236, 0.04);
     border-left: 2px solid var(--accent-primary);
     border-radius: var(--radius-sm);
     padding: var(--sp-2) var(--sp-3);
+    margin: 4px 0 0 0;
   }
 
   .ref-quote p {
     font-size: var(--fs-xs);
     line-height: 1.5;
     color: var(--text-secondary);
+    margin: 0;
+    font-style: italic;
   }
 
-  /* ─── Footer & Action Chips ─── */
-  .ref-card-footer {
+  .card-actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--sp-2);
-    margin-top: auto;
-    padding-top: var(--sp-3);
-    border-top: 1px solid var(--border-subtle);
+    margin-top: 4px;
+    padding-top: 0;
   }
 
-  .action-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 11px;
-    border-radius: var(--radius-sm);
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    text-decoration: none;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    transition: all var(--duration-fast) var(--ease-out);
-    font-family: inherit;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .action-chip:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--border-default);
-    color: var(--text-primary);
-  }
-
-  .action-chip.phone :global(svg) {
-    width: 13px;
-    height: 13px;
-    color: var(--accent-primary);
-    flex-shrink: 0;
-  }
-
-  .action-chip.email :global(svg) {
-    width: 13px;
-    height: 13px;
-    color: var(--text-muted);
-    flex-shrink: 0;
-  }
-
-  .action-chip.email:hover :global(svg) {
-    color: var(--text-primary);
-  }
-
-  /* ─── Personal Card (Compact & Balanced) ─── */
-  .personal-card {
-    padding: var(--sp-3) var(--sp-4);
+  /* Tarjeta Personal */
+  .card-personal {
+    padding: var(--sp-4) var(--sp-5);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: var(--sp-3);
+    border: 1px solid var(--border-default);
+  }
+
+  .card-personal:hover {
+    border-color: var(--accent-primary-border);
+    transform: translateY(-1px);
   }
 
   .personal-info {
@@ -376,16 +344,16 @@ const personalRefs = refList.filter(
   }
 
   .personal-avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: var(--text-tertiary);
+    color: var(--text-muted);
   }
 
   .personal-meta {
@@ -395,36 +363,59 @@ const personalRefs = refList.filter(
     min-width: 0;
   }
 
-  .personal-meta h4 {
+  .personal-meta .person-name {
     font-size: var(--fs-sm);
-    font-weight: 600;
-    color: var(--text-primary);
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .personal-rel {
+  .person-rel {
     font-size: var(--fs-xs);
-    color: var(--text-tertiary);
-    font-weight: 400;
+    color: var(--text-muted);
     line-height: 1.2;
+  }
+
+  /* Chips de Contacto */
+  .contact-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    transition: all var(--duration-fast) var(--ease-out);
+    font-family: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contact-chip:hover {
+    background: var(--accent-primary-subtle);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .contact-chip :global(svg) {
+    width: 13px;
+    height: 13px;
+    color: var(--accent-primary);
+    flex-shrink: 0;
   }
 
   .personal-phone {
     flex-shrink: 0;
   }
 
-  /* ─── Responsive Media Queries ─── */
-  @media (max-width: 768px) {
-    .laboral-grid,
-    .personal-grid {
+  /* Responsive */
+  @media (max-width: 860px) {
+    .references-dual-columns {
       grid-template-columns: 1fr;
-      gap: var(--sp-3);
+      gap: var(--sp-6);
     }
 
-    .personal-card {
+    .card-personal {
       flex-direction: column;
       align-items: flex-start;
       gap: var(--sp-3);
@@ -436,85 +427,76 @@ const personalRefs = refList.filter(
     }
   }
 
-  /* ─── Print & PDF Optimization ─── */
+  /* Print */
   @media print {
-    .references-container {
-      gap: 1rem !important;
-    }
-
-    .group-header {
-      border-bottom: 1px solid #e4e4e7 !important;
-    }
-
-    .group-title-row h3 {
-      color: #000000 !important;
-    }
-
-    .group-indicator {
-      display: none !important;
-    }
-
-    .laboral-grid,
-    .personal-grid {
-      display: grid !important;
+    .references-dual-columns {
       grid-template-columns: repeat(2, 1fr) !important;
       gap: 0.75rem !important;
-      page-break-inside: avoid;
-      break-inside: avoid;
+    }
+
+    .col-header {
+      border-bottom: 1px solid #d1d5db !important;
+      padding-bottom: 3px !important;
+    }
+
+    .col-title-badge h3 {
+      color: #000 !important;
+    }
+
+    .status-dot, .count-pill {
+      display: none !important;
     }
 
     .ref-card {
       background: transparent !important;
-      border: 1px solid #e4e4e7 !important;
+      border: 1px solid #d1d5db !important;
       box-shadow: none !important;
-      page-break-inside: avoid;
       break-inside: avoid;
+      page-break-inside: avoid;
+      padding: 6px 10px !important;
     }
 
-    .ref-title-block h4,
-    .personal-meta h4 {
-      color: #000000 !important;
+    .card-laboral {
+      min-height: auto !important;
+      gap: 6px !important;
+      padding: 8px 12px !important;
     }
 
-    .ref-position {
-      color: #27272a !important;
-      font-weight: 600 !important;
-    }
-
-    .company-name,
-    .area-name,
-    .personal-rel {
-      color: #52525b !important;
-    }
-
-    .ref-quote {
+    .type-tag {
+      border: 1px solid #d1d5db !important;
+      color: #333 !important;
       background: transparent !important;
-      border: 1px solid #e4e4e7 !important;
-      border-left: 2px solid #000000 !important;
-      padding: 0.25rem 0.5rem !important;
+      font-size: 0.6rem !important;
+      padding: 1px 4px !important;
     }
 
-    .ref-quote p {
-      color: #3f3f46 !important;
+    .person-name {
+      color: #000 !important;
+      font-size: 0.85rem !important;
     }
 
-    .ref-card-footer {
-      border-top: 1px solid #e4e4e7 !important;
-      padding-top: 0.25rem !important;
+    .person-title {
+      color: #333 !important;
+      font-weight: 500 !important;
+      font-size: 0.75rem !important;
     }
 
-    .action-chip {
+    .contact-chip {
       background: transparent !important;
-      border: 1px solid #e4e4e7 !important;
-      color: #000000 !important;
-      padding: 2px 6px !important;
+      border: none !important;
+      padding: 0 !important;
+      color: #000 !important;
+      font-size: 0.75rem !important;
     }
 
-    .action-chip :global(svg),
+    .contact-chip :global(svg) {
+      color: #000 !important;
+      width: 11px !important;
+      height: 11px !important;
+    }
+
     .personal-avatar {
-      color: #000000 !important;
-      background: transparent !important;
-      border-color: #e4e4e7 !important;
+      display: none !important;
     }
   }
 </style>

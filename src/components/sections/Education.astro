@@ -27,14 +27,12 @@ const { class: className } = Astro.props;
             return (
               <li class="edu-item">
                 <article>
-                  <header class="edu-header">
-                    <div class="edu-meta">
-                      <h4>{institution}</h4>
-                      <p class="edu-degree">{studyType} {area ? `· ${area}` : ''}</p>
-                    </div>
+                  <div class="edu-meta">
+                    <h4>{institution}</h4>
+                    <p class="edu-degree">{studyType} {area ? `· ${area}` : ''}</p>
+                  </div>
 
-                    {years && <time>{years}</time>}
-                  </header>
+                  {years && <time>{years}</time>}
                 </article>
               </li>
             )
@@ -46,8 +44,8 @@ const { class: className } = Astro.props;
     {
       certificates && certificates.length > 0 && (
         <div class="edu-group">
-          <h3 class="group-title">Cursos & Certificaciones</h3>
-          <ul class="cert-list">
+          <h3 class="group-title">Cursos & Certificaciones en Salud</h3>
+          <ul class="cert-grid">
             {certificates.map(({ name, issuer, date }) => (
               <li class="cert-item">
                 <article>
@@ -83,17 +81,22 @@ const { class: className } = Astro.props;
     font-size: var(--fs-xs);
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     font-weight: 600;
     margin: 0;
-    padding-bottom: 4px;
-    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-default);
   }
 
-  .edu-list,
-  .cert-list {
+  .edu-list {
     display: flex;
     flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-3);
   }
 
@@ -101,33 +104,28 @@ const { class: className } = Astro.props;
   .cert-item article {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--sp-2);
-    padding: var(--sp-2) var(--sp-3);
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
     background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-sm);
-    transition: border-color var(--duration-fast) var(--ease-out);
+    transition: all var(--duration-fast) var(--ease-out);
+    height: 100%;
   }
 
   .edu-item article:hover,
   .cert-item article:hover {
-    border-color: var(--border-default);
-  }
-
-  .edu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--sp-2);
-    width: 100%;
+    border-color: var(--accent-primary-border);
+    background: rgba(123, 180, 236, 0.04);
+    transform: translateY(-1px);
   }
 
   .edu-meta,
   .cert-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .edu-meta h4,
@@ -136,6 +134,7 @@ const { class: className } = Astro.props;
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.35;
+    margin: 0;
   }
 
   .edu-degree,
@@ -144,27 +143,37 @@ const { class: className } = Astro.props;
     font-size: var(--fs-xs);
     font-weight: 400;
     line-height: 1.4;
+    margin: 0;
   }
 
   time {
-    color: var(--text-tertiary);
+    color: var(--accent-primary);
+    background: var(--accent-primary-subtle);
+    border: 1px solid var(--accent-primary-border);
     font-size: var(--fs-xs);
     font-weight: 500;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
 
   @media (max-width: 700px) {
-    .edu-header,
+    .cert-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .edu-item article,
     .cert-item article {
       flex-direction: column;
-      gap: 4px;
+      align-items: flex-start;
+      gap: 6px;
     }
   }
 
   @media print {
-    .edu-container {
-      gap: 1rem !important;
+    .cert-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
     }
 
     .group-title {
@@ -176,8 +185,7 @@ const { class: className } = Astro.props;
     .cert-item article {
       background: transparent !important;
       border: 1px solid #e4e4e7 !important;
-      padding: 0.35rem 0.5rem !important;
-      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .edu-meta h4,
@@ -185,13 +193,12 @@ const { class: className } = Astro.props;
       color: #000 !important;
     }
 
-    .edu-degree,
-    .cert-issuer {
-      color: #3f3f46 !important;
-    }
-
     time {
-      color: #52525b !important;
+      color: #374151 !important;
+      background: transparent !important;
+      border: none !important;
+      font-weight: 600 !important;
+      font-size: 0.75rem !important;
     }
   }
 </style>

@@ -14,15 +14,9 @@
       "postalCode": "090150",
       "city": "Guayaquil",
       "countryCode": "EC",
-      "region": "Guayas, Ecuador"
+      "region": "Ecuador"
     },
-    "profiles": [
-      {
-        "network": "GitHub",
-        "username": "ladybmv",
-        "url": "https://github.com/ladybmv"
-      }
-    ]
+    "profiles": []
   },
   "work": [
     {

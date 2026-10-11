@@ -82,6 +82,13 @@ const { class: className } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .job-item:last-child article {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
   .job-header {
@@ -94,7 +101,7 @@ const { class: className } = Astro.props;
   .job-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .job-meta h3 {
@@ -113,13 +120,17 @@ const { class: className } = Astro.props;
   }
 
   .job-meta h4 {
-    color: var(--text-muted);
-    font-weight: 400;
+    color: var(--accent-primary);
+    font-weight: 500;
     font-size: var(--fs-sm);
   }
 
   time {
-    color: var(--text-tertiary);
+    color: var(--accent-primary);
+    background: var(--accent-primary-subtle);
+    border: 1px solid var(--accent-primary-border);
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
     font-size: var(--fs-xs);
     font-weight: 500;
     white-space: nowrap;
@@ -130,6 +141,11 @@ const { class: className } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
+  }
+
+  .job-body p {
+    color: var(--text-secondary);
+    line-height: 1.6;
   }
 
   .highlights {
@@ -147,28 +163,29 @@ const { class: className } = Astro.props;
     gap: var(--sp-2);
     padding: var(--sp-2) var(--sp-3);
     background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-sm);
     font-size: var(--fs-xs);
     color: var(--text-secondary);
     line-height: 1.5;
-    transition: border-color var(--duration-fast) var(--ease-out);
+    transition: all var(--duration-fast) var(--ease-out);
   }
 
   .highlights li:hover {
-    border-color: var(--border-default);
+    border-color: var(--accent-primary-border);
+    background: rgba(123, 180, 236, 0.05);
   }
 
   .highlights li :global(svg) {
     flex-shrink: 0;
     margin-top: 2px;
-    color: var(--text-muted);
+    color: var(--accent-primary);
   }
 
   @media (max-width: 700px) {
     .job-header {
       flex-direction: column;
-      gap: var(--sp-1);
+      gap: var(--sp-2);
     }
 
     .highlights {
@@ -177,18 +194,69 @@ const { class: className } = Astro.props;
   }
 
   @media print {
+    .jobs-list {
+      gap: 0.65rem !important;
+    }
+
+    .job-item article {
+      border-bottom: 1px solid #e5e7eb !important;
+      padding-bottom: 0.4rem !important;
+      break-inside: avoid;
+      page-break-inside: avoid;
+      gap: 4px !important;
+    }
+
+    .job-meta h3 {
+      font-size: 0.95rem !important;
+      color: #000 !important;
+    }
+
+    .job-meta h4 {
+      color: #374151 !important;
+      font-weight: 600 !important;
+      font-size: 0.8rem !important;
+    }
+
+    time {
+      background: transparent !important;
+      border: none !important;
+      color: #374151 !important;
+      padding: 0 !important;
+      font-weight: 600 !important;
+      font-size: 0.75rem !important;
+    }
+
+    .job-body {
+      gap: 4px !important;
+    }
+
+    .job-body p {
+      font-size: 0.8rem !important;
+      line-height: 1.4 !important;
+      color: #333 !important;
+    }
+
     .highlights {
-      border-top: 1px solid #e4e4e7 !important;
+      border-top: none !important;
+      margin-top: 2px !important;
+      padding-top: 0 !important;
+      gap: 2px !important;
+      grid-template-columns: 1fr !important;
     }
 
     .highlights li {
       background: transparent !important;
-      border: 1px solid #e4e4e7 !important;
-      color: #000 !important;
+      border: none !important;
+      padding: 1px 0 !important;
+      color: #111 !important;
+      font-size: 0.76rem !important;
+      line-height: 1.35 !important;
     }
 
     .highlights li :global(svg) {
       color: #000 !important;
+      width: 10px !important;
+      height: 10px !important;
     }
   }
 </style>

@@ -21,28 +21,29 @@ import Download from "@/icons/Download.astro"
     display: inline-flex;
     align-items: center;
     gap: var(--sp-2);
-    background: var(--text-primary);
-    color: var(--bg-base);
-    border: 1px solid var(--text-primary);
+    background: var(--accent-primary);
+    color: #0b121d;
+    border: 1px solid var(--accent-primary);
     border-radius: var(--radius-full);
-    padding: 0.6rem 1.1rem;
+    padding: 0.65rem 1.2rem;
     font-size: var(--fs-xs);
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: all var(--duration-fast) var(--ease-out);
     z-index: 999;
     font-family: inherit;
   }
 
   #download-pdf-btn:hover {
     transform: translateY(-2px);
-    background: #ffffff;
-    border-color: #ffffff;
+    background: var(--accent-primary-hover);
+    border-color: var(--accent-primary-hover);
+    box-shadow: 0 10px 25px rgba(123, 180, 236, 0.35);
   }
 
   #download-pdf-btn :global(svg) {
-    color: var(--bg-base);
+    color: #0b121d;
   }
 
   @media (max-width: 700px) {
