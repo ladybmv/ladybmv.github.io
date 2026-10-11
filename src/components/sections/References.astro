@@ -2,17 +2,20 @@
 import Section from "../Section.astro";
 import Phone from "@/icons/Phone.astro";
 import Mail from "@/icons/Mail.astro";
+import type { References as RefType } from "@/cv";
 import { references } from "@cv";
 
 const { class: className } = Astro.props;
 
-const laboralRefs = references?.filter(
-  (r) => r.type?.toLowerCase() === "laboral"
-) || [];
+const refList = (references || []) as Array<RefType>;
 
-const personalRefs = references?.filter(
+const laboralRefs = refList.filter(
+  (r) => r.type?.toLowerCase() === "laboral"
+);
+
+const personalRefs = refList.filter(
   (r) => r.type?.toLowerCase() !== "laboral"
-) || [];
+);
 ---
 
 {

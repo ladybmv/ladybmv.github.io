@@ -3,7 +3,6 @@ import Layout from "@/layouts/Layout.astro";
 import Education from "@/components/sections/Education.astro";
 import Experience from "@/components/sections/Experience.astro";
 import Hero from "@/components/sections/Hero.astro";
-import Projects from "@/components/sections/Projects.astro";
 import Skills from "@/components/sections/Skills.astro";
 import References from "@/components/sections/References.astro";
 import DownloadPDF from "@/components/DownloadPDF.astro";
@@ -16,7 +15,6 @@ const { name, label, location } = basics;
   <main>
     <Hero class="bento-hero" />
     <Experience class="bento-experience" />
-    <Projects class="bento-projects" />
     <Skills class="bento-skills" />
     <Education class="bento-education" />
     <References class="bento-references" />
@@ -55,7 +53,6 @@ const { name, label, location } = basics;
 <style is:global>
   .bento-hero { grid-column: span 6; }
   .bento-experience { grid-column: span 6; }
-  .bento-projects { grid-column: span 6; }
   .bento-skills { grid-column: span 3; }
   .bento-education { grid-column: span 3; }
   .bento-references { grid-column: span 6; }
@@ -63,7 +60,6 @@ const { name, label, location } = basics;
   @media (max-width: 900px) {
     .bento-hero,
     .bento-experience,
-    .bento-projects,
     .bento-skills,
     .bento-education,
     .bento-references {

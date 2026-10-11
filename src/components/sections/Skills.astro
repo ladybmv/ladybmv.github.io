@@ -1,71 +1,12 @@
 ---
 import Section from "../Section.astro"
-import AstroIcon from "@/icons/AstroIcon.astro"
-import SolidJS from "@/icons/SolidJS.astro"
-import React from "@/icons/react.astro"
-import Next from "@/icons/next.astro"
-import Tailwind from "@/icons/tailwind.astro"
-import Node from "@/icons/node.astro"
-import Bun from "@/icons/Bun.astro"
-import Elysia from "@/icons/Elysia.astro"
-import Php from "@/icons/php.astro"
-import Redis from "@/icons/Redis.astro"
-import PostgreSQL from "@/icons/PostgreSQL.astro"
-import MySQL from "@/icons/sql.astro"
-import Drizzle from "@/icons/Drizzle.astro"
-import TanStack from "@/icons/TanStack.astro"
-import TypeScript from "@/icons/type.astro"
-import Python from "@/icons/python.astro"
-import Git from "@/icons/git.astro"
-import GitHub from "@/icons/GitHub.astro"
-import Docker from "@/icons/Docker.astro"
-import CSharp from "@/icons/CSharp.astro"
-import DotNet from "@/icons/DotNet.astro"
-import Azure from "@/icons/Azure.astro"
-import SqlServer from "@/icons/SqlServer.astro"
-import PowerShell from "@/icons/PowerShell.astro"
-import AzureDevOps from "@/icons/AzureDevOps.astro"
-import MSqlServer from "@/icons/MSqlServer.astro"
-import WindowsServer from "@/icons/WindowsServer.astro"
-import ActiveDirectory from "@/icons/ActiveDirectory.astro"
-
+import Check from "@/icons/Check.astro"
 import { skills } from "@cv"
-
-const SKILLS_ICONS: Record<string, (_props: Record<string, unknown>) => unknown> = {
-  Astro: AstroIcon,
-  SolidJS,
-  React,
-  "Next.js": Next,
-  "Tailwind CSS": Tailwind,
-  "Node.js": Node,
-  Bun,
-  Elysia,
-  PHP: Php,
-  Redis,
-  PostgreSQL,
-  MySQL,
-  "Drizzle ORM": Drizzle,
-  TanStack,
-  TypeScript,
-  Python,
-  Git,
-  GitHub,
-  Docker,
-  "C#": CSharp,
-  ".NET": DotNet,
-  Azure,
-  "Microsoft Azure": Azure,
-  "SQL Server": MSqlServer,
-  PowerShell,
-  "Azure DevOps": AzureDevOps,
-  "Windows Server": WindowsServer,
-  "Active Directory": ActiveDirectory
-}
 
 const { class: className } = Astro.props;
 ---
 
-<Section title="Stack Tecnológico" class={`skills-section ${className || ''}`}>
+<Section title="Habilidades & Competencias" class={`skills-section ${className || ''}`}>
   <div class="skills-container">
     {
       skills.map(({ name, keywords }) => (
@@ -73,11 +14,9 @@ const { class: className } = Astro.props;
           <h3>{name}</h3>
           <ul class="keywords-list">
             {keywords.map((keyword) => {
-              const Icon = SKILLS_ICONS[keyword]
-
               return (
                 <li class="skill-tag">
-                  {Icon && <Icon />}
+                  <Check />
                   <span>{keyword}</span>
                 </li>
               )
@@ -135,9 +74,9 @@ const { class: className } = Astro.props;
   }
 
   .skill-tag :global(svg) {
-    width: 14px;
-    height: 14px;
-    color: var(--text-secondary);
+    width: 12px;
+    height: 12px;
+    color: var(--accent-primary);
     flex-shrink: 0;
   }
 

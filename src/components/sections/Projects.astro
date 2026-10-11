@@ -8,17 +8,22 @@ import ChevronLeft from "@/icons/ChevronLeft.astro";
 import ChevronRight from "@/icons/ChevronRight.astro";
 import Section from "../Section.astro";
 
+import type { Projects as ProjectType } from "@/cv";
 import { projects } from "@cv";
 const { class: className } = Astro.props;
+
+const projectList = (projects || []) as Array<ProjectType>;
 ---
 
-<Section
-  title="Proyectos Destacados"
-  class={`projects-section ${className || ""}`}
->
-  <ul class="projects-grid">
-    {
-      projects.map(
+{
+  projectList.length > 0 && (
+    <Section
+      title="Proyectos Destacados"
+      class={`projects-section ${className || ""}`}
+    >
+      <ul class="projects-grid">
+        {
+          projectList.map(
         ({
           url,
           description,
@@ -229,7 +234,9 @@ const { class: className } = Astro.props;
       )
     }
   </ul>
-</Section>
+    </Section>
+  )
+}
 
 <script>
   const openButtons = document.querySelectorAll<HTMLButtonElement>(".arch-cta");

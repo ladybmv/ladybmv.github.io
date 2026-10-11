@@ -10,10 +10,18 @@ const { class: className } = Astro.props;
   <ul class="jobs-list">
     {
       work.map(
-        ({ name, startDate, endDate, position, summary, highlights, url }) => {
-          const startYear = new Date(startDate).getFullYear()
-          const endYear =
-            endDate != null ? new Date(endDate).getFullYear() : "Actual"
+        ({ name, startDate, endDate, duration, position, summary, highlights, url }) => {
+          let dateDisplay = duration
+          if (!dateDisplay && startDate) {
+            const parsedStart = new Date(startDate)
+            const startYear = !isNaN(parsedStart.getTime()) ? parsedStart.getFullYear() : startDate
+            let endYear = "Actual"
+            if (endDate) {
+              const parsedEnd = new Date(endDate)
+              endYear = !isNaN(parsedEnd.getTime()) ? parsedEnd.getFullYear().toString() : endDate
+            }
+            dateDisplay = `${startYear} — ${endYear}`
+          }
 
           return (
             <li class="job-item">
@@ -32,9 +40,11 @@ const { class: className } = Astro.props;
                     <h4>{position}</h4>
                   </div>
 
-                  <time datetime={startDate}>
-                    {startYear} — {endYear}
-                  </time>
+                  {dateDisplay && (
+                    <time datetime={startDate || ""}>
+                      {dateDisplay}
+                    </time>
+                  )}
                 </header>
 
                 <div class="job-body">

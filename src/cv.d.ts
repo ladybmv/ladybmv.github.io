@@ -21,6 +21,8 @@ interface Basics {
   phone: string
   url: string
   summary: string
+  cedula?: string
+  age?: string
   location: Location
   profiles: Array<Profiles>
 }
@@ -42,28 +44,29 @@ interface Profiles {
 interface Work {
   name: string
   position: string
-  url: string
-  startDate: DateStr
-  endDate: DateStr | null
+  url?: string
+  startDate?: string
+  endDate?: string | null
+  duration?: string
   summary: string
-  highlights: Highlight
+  highlights?: Highlight
 }
 
-type DateStr = `${string}-${string}-${string}`
+type DateStr = `${string}-${string}-${string}` | string
 
 interface Volunteer {
   organization: string
   position: string
-  url: string
-  startDate: DateStr
-  endDate: DateStr
+  url?: string
+  startDate?: string
+  endDate?: string | null
   summary: string
-  highlights: Highlight
+  highlights?: Highlight
 }
 
 interface Skills {
   name: string
-  level: string
+  level?: string
   keywords: Array<string>
 }
 
@@ -75,29 +78,29 @@ interface Awards {
 }
 
 interface Certificates {
-  name: string,
-  date: DateStr,
-  issuer: string,
-  url: string
+  name: string
+  date?: string
+  issuer: string
+  url?: string
 }
 
 interface Publications {
   name: string
   publisher: string
-  releaseDate: DateStr
+  releaseDate: string
   url: string
   summary: string
 }
 
 interface Education {
   institution: string
-  url: string
+  url?: string
   area: string
   studyType: string
-  startDate: DateStr
-  endDate: DateStr
-  score: string
-  courses: Array<string>
+  startDate?: string
+  endDate?: string | null
+  score?: string
+  courses?: Array<string>
 }
 
 interface Languages {
@@ -123,7 +126,7 @@ type Language =
   | "Bengali"
   | string
 
-interface Projects {
+export interface Projects {
   name: string
   isActive: boolean
   description: string

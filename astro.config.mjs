@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 const SERVER_PORT = 3000;
 const LOCALHOST_URL = `http://localhost:${SERVER_PORT}`;
-const LIVE_URL = "https://Jhonlz09.github.io";
+const LIVE_URL = "https://ladybmv.github.io";
 
 const SCRIPT = process.env.npm_lifecycle_script || "";
 const isBuild = SCRIPT.includes("astro build");
