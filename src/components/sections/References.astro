@@ -97,7 +97,7 @@ const personalRefs = refList.filter(
           </header>
 
           <div class="col-cards-wrapper personal-wrapper">
-            {personalRefs.map(({ name, phone, reference }) => (
+            {personalRefs.map(({ name, phone, title }) => (
               <article class="ref-card card-personal">
                 <div class="card-identity">
                   <div class="ref-avatar avatar-personal" aria-hidden="true">
@@ -121,7 +121,7 @@ const personalRefs = refList.filter(
                   <div class="identity-meta">
                     <span class="type-tag tag-personal">Personal</span>
                     <h4 class="person-name">{name}</h4>
-                    <span class="person-sub">{reference || "Referencia Personal"}</span>
+                    <span class="person-sub">{title || "Referencia Personal"}</span>
                   </div>
                 </div>
 
